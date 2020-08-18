@@ -1,0 +1,34 @@
+#!/bin/bash
+# Convert any executable to shell function
+# So you can get all your scripts/exe in 1 file, to copy anywhere.
+# Ready to be used anywhere
+#
+# Concept:
+# the exe file (script or binary) is compressed/base64 in the function
+# when calling the function decode/decomress in /tmp
+#
+# Really handy when you need to manage thousands of servers
+# to have same env/toolbox when connecting to any of them
+#
+usage="usage: exe2func <exe> [<func>]
+example: exe2func ./myscript.py myscript >> allmyfunctions"
+
+[ ! "$1" ] && echo "$usage" && exit 1
+execfile=$(type -p $1)
+[ ! "$execfile" ] && echo "cannot find executable $1" && exit 1
+execname=$(basename $execfile)
+func=${2:-${execname%.*}}
+
+cat - <<EOFUNC
+function $func
+{
+    cat - <<'EOF'| base64 -d| bzip2 -dc >/tmp/.$execname
+$(cat $execfile| bzip2 -c| base64)
+EOF
+    chmod +x /tmp/.$execname
+    /tmp/.$execname "\$@"
+    typeset e=\$?
+    rm /tmp/.$execname
+    return \$e
+}
+EOFUNC
