@@ -12,6 +12,12 @@ when calling the function decode/decompress in /tmp
 Really handy when you need to manage thousands of servers
 to have same env/toolbox when connecting to any of them
 
+## Usage:
+```
+usage: exe2func <exe> [<func>]
+example: exe2func ./myscript.py myscript >> allmyfunctions
+```
+
 ### Example:
 Putting the exe2func script itself in a function:
 
