@@ -5,7 +5,7 @@
 #
 # Concept:
 # the exe file (script or binary) is compressed/base64 in the function
-# when calling the function decode/decomress in /tmp
+# when calling the function decode/decompress in /tmp
 #
 # Really handy when you need to manage thousands of servers
 # to have same env/toolbox when connecting to any of them
